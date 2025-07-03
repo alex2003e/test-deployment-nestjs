@@ -1,0 +1,39 @@
+name: CI - Produts
+
+on: 
+  push: 
+    paths: ['products-ms/**']
+  pull_request:
+    paths: ['products-ms/**']
+
+jobs:
+    test: 
+      runs-on: ubuntu-latest
+
+      defaults:
+        run: 
+          working-directory: products-ms
+
+      steps:
+        - name: CheckOut Directory
+          uses: actions/checkout@v4
+        
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '22.17.0'
+        
+        - name: Install Dependency
+          run: yarn install
+
+        - name: Run Test
+          run: yarn run test
+
+        - name: Run Lint 
+          run: yarn run lint
+
+        - name: Run Build
+          run: yarn build
+      
+      
+      
