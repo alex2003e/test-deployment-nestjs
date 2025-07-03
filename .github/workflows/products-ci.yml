@@ -2,8 +2,10 @@ name: CI - Produts
 
 on: 
   push: 
+    branches: ['*']
     paths: ['products-ms/**']
   pull_request:
+    branches: ['*']
     paths: ['products-ms/**']
 
 jobs:
