@@ -28,7 +28,7 @@ model products {
 model productsDeleted {
   id  String @id
   idProduct  String @unique
-  name String @unique
+  name String 
   description String
   price Float
   stock Int

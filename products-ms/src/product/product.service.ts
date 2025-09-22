@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto';
 import { PaginationDto, ResponsExceptionDto } from '../common/dto';
 import { v4 as uuidV4 } from 'uuid';
@@ -47,7 +47,7 @@ export class ProductService {
       take: limit,
     });
     return {
-      produts: productsAll,
+      products: productsAll,
       pagination: {
         page,
         totalItems: totalProducts,
@@ -69,6 +69,7 @@ export class ProductService {
         message: 'Product not found.',
         data: {},
       };
+      Logger.error(result);
       throw new RpcException(result);
     }
     return productById;
@@ -76,7 +77,7 @@ export class ProductService {
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     const productById = await this.findOne(id);
-    
+
     const { name, description, price, stock } = updateProductDto;
 
     if (!name && !description && !price && !stock) return productById;
@@ -84,7 +85,7 @@ export class ProductService {
     if (name && productById.name !== name.toLocaleLowerCase()) {
       await this.validationName(`${name}`);
     }
-    const {id: ___, ...data } = updateProductDto;
+    const { id: ___, ...data } = updateProductDto;
     return this.prisma.products.update({
       where: { id },
       data: { ...data, updatedAt: new Date() },

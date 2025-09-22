@@ -1,0 +1,36 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+exporters:
+  logging:
+    loglevel: debug
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  # --- CAMBIO AQUÍ ---
+  # En lugar del exportador "jaeger", usamos "otlp" y lo apuntamos
+  # al puerto OTLP gRPC de Jaeger, que es el 4317.
+  # Le damos un nombre descriptivo "otlp/jaeger" para mayor claridad.
+  otlp/jaeger:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      # Y usamos el nuevo exportador en el pipeline de trazas.
+      exporters: [logging, otlp/jaeger] # <-- CAMBIO AQUÍ
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, prometheus]

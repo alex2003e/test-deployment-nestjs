@@ -45,7 +45,7 @@ describe('ProductDeletedService', () => {
 
       const result = await service.findAll(dto);
       expect(result.pagination.totalItems).toBe(2);
-      expect(result.produts.length).toBe(2);
+      expect(result.products.length).toBe(2);
     });
   });
 

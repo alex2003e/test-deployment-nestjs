@@ -15,7 +15,7 @@ export class ProductDeletedService {
       take: limit,
     });
     return {
-      produts: productsDeletedAll,
+      products: productsDeletedAll,
       pagination: {
         page,
         totalItems: totalProductsDeleted,

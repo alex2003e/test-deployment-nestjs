@@ -31,7 +31,7 @@ export class ProductController {
   // @Get()
   @MessagePattern('products.get-all')
   async findAll(@Payload() paginationDto: PaginationDto): Promise<ResponsDto> {
-    // console.log(paginationDto)
+    // console.log("consultando Productos...")
     const result = await this.productService.findAll(paginationDto);
     return {
       success: true,

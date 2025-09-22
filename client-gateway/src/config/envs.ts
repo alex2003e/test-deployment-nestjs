@@ -3,15 +3,17 @@ import * as joi from 'joi';
 
 interface IEnvVars {
   PORT: number;
-  PORT_PRODUCTS_MS: number;
-  HOST_PRODUCTS_MS: string;
+  SERVER_NATS: string;
+  // PORT_PRODUCTS_MS: number;
+  // HOST_PRODUCTS_MS: string;
 }
 
 const envsSchema = joi
   .object({
     PORT: joi.number().required(),
-    PORT_PRODUCTS_MS: joi.number().required(),
-    HOST_PRODUCTS_MS: joi.string().required(),
+    SERVER_NATS:joi.string().required(),
+    // PORT_PRODUCTS_MS: joi.number().required(),
+    // HOST_PRODUCTS_MS: joi.string().required(),
   })
   .unknown(true);
 
@@ -22,6 +24,7 @@ const envsVar = value as IEnvVars;
 
 export const envs = {
   port: envsVar.PORT,
-  portProductsMs: envsVar.PORT_PRODUCTS_MS,
-  hostProductsMs: envsVar.HOST_PRODUCTS_MS,
+  serverNats: envsVar.SERVER_NATS,
+  // portProductsMs: envsVar.PORT_PRODUCTS_MS,
+  // hostProductsMs: envsVar.HOST_PRODUCTS_MS,
 };

@@ -1,22 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
+
 import { envs } from './config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { bootstrapTelemetry } from './tracing';
+import { OpenTelemetryLogger } from './opentelemetry.logger';
 
 async function bootstrap() {
-  const logger = new Logger('Products-ms');
-
+  bootstrapTelemetry();
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.NATS,
       options: {
-        port: envs.port,
-      }
-  });
+        servers: envs.natsServer,
+      },
+      bufferLogs: true,
+    },
+  );
 
+  app.useLogger(new OpenTelemetryLogger());
   await app.listen();
-  logger.log(`ms running on port: ${envs.port}`);
 }
 bootstrap();
